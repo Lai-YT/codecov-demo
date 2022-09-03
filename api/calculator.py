@@ -1,14 +1,21 @@
+from typing import Literal, Union
+
+
 class Calculator:
-    def add(x, y):
+    @staticmethod
+    def add(x: float, y: float) -> float:
         return x + y
 
-    def subtract(x, y):
+    @staticmethod
+    def subtract(x: float, y: float) -> float:
         return x - y
 
-    def multiply(x, y):
+    @staticmethod
+    def multiply(x: float, y: float) -> float:
         return x * y
 
-    def divide(x, y):
+    @staticmethod
+    def divide(x: float, y: float) -> Union[float, Literal['Cannot divide by 0']]:
         try:
             return x * 1.0 / y
         except ZeroDivisionError:
