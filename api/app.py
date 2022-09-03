@@ -32,5 +32,5 @@ def operation(method: str, num_factors: int) -> str:
     return str(getattr(Calculator, method)(*factors))
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     app.run(host='0.0.0.0', port=8080)
