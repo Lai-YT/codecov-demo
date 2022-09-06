@@ -17,14 +17,22 @@ export class Calculator {
   }
 
   appendNumber(number) {
-    if (!this.validOperand) return
-    if (number === '.' && this.currentOperand.includes('.')) return
+    if (!this.validOperand) {
+      return
+    }
+    if (number === '.' && this.currentOperand.includes('.')) {
+      return
+    }
     this.currentOperand = this.currentOperand.toString() + number.toString()
   }
 
   chooseOperation(operation) {
-    if (!this.validOperand) return
-    if (this.currentOperand === '') return
+    if (!this.validOperand) {
+      return
+    }
+    if (this.currentOperand === '') {
+      return
+    }
     if (this.previousOperand !== '') {
       this.compute()
     }
@@ -35,12 +43,14 @@ export class Calculator {
 
   compute() {
     if (!this.validOperand) {
-      return;
+      return
     }
 
     const prev = parseFloat(this.previousOperand)
     const current = parseFloat(this.currentOperand)
-    if (isNaN(prev) || isNaN(current)) return
+    if (isNaN(prev) || isNaN(current)) {
+      return
+    }
 
     let operation
     switch (this.operation) {
@@ -75,12 +85,12 @@ export class Calculator {
       })
     })
     if (!response.ok) {
-      throw new Error("Error: " + response.status);
+      throw new Error("Error: " + response.status)
     }
-    this.currentOperand = await response.json();
-    this.operation = undefined;
-    this.previousOperand = '';
-    this.updateDisplay();
+    this.currentOperand = await response.json()
+    this.operation = undefined
+    this.previousOperand = ''
+    this.updateDisplay()
   }
 
   getDisplayNumber(number) {
@@ -89,9 +99,9 @@ export class Calculator {
     const decimalDigits = stringNumber.split('.')[1]
     let integerDisplay
     if (isNaN(integerDigits)) {
-      integerDisplay = stringNumber;
+      integerDisplay = stringNumber
       if (stringNumber.length > 0) {
-        this.validOperand = false;
+        this.validOperand = false
       }
     } else {
       integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
