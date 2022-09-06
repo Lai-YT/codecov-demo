@@ -73,7 +73,7 @@ export class Calculator {
   }
 
   async callApi(operation) {
-    const response = await fetch("/api/" + operation, {
+    const response = await fetch('/api/' + operation, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -85,7 +85,7 @@ export class Calculator {
       })
     })
     if (!response.ok) {
-      throw new Error("Error: " + response.status)
+      throw new Error('Error: ' + response.status)
     }
     this.currentOperand = await response.json()
     this.operation = undefined
