@@ -1,5 +1,18 @@
 const calc = require('./calculator')
 
+describe('Number utility test suite', () => {
+  test('works on number string', () => {
+    expect(calc._isNumberOrNumberString('123')).toBe(true)
+    expect(calc._isNumberOrNumberString('123.456')).toBe(true)
+    expect(calc._isNumberOrNumberString('123.456.789')).toBe(false)
+  })
+
+  test('works on number', () => {
+    expect(calc._isNumberOrNumberString(123)).toBe(true)
+    expect(calc._isNumberOrNumberString(123.456)).toBe(true)
+  })
+})
+
 describe('Calculator test suite', () => {
   test('calculator clears', () => {
     const calculator = new calc.Calculator()

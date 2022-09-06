@@ -1,3 +1,5 @@
+'use strict'
+
 export class Calculator {
   constructor(previousOperandTextElement, currentOperandTextElement) {
     this.previousOperandTextElement = previousOperandTextElement
@@ -13,44 +15,47 @@ export class Calculator {
   }
 
   delete() {
-    this.currentOperand = this.currentOperand.toString().slice(0, -1)
+    this.currentOperand = _deleteLastChar(this.currentOperand.toString())
   }
 
   appendNumber(number) {
     if (!this.validOperand) {
       return
     }
-    if (number === '.' && this.currentOperand.includes('.')) {
+    if (number === '.' && _hasDecimalPoint(this.currentOperand)) {
       return
     }
     this.currentOperand = this.currentOperand.toString() + number.toString()
   }
 
   chooseOperation(operation) {
-    if (!this.validOperand) {
-      return
-    }
-    if (this.currentOperand === '') {
-      return
-    }
-    if (this.previousOperand !== '') {
+    if (this._hasValidOperands()) {
       this.compute()
     }
-    this.operation = operation
+    if (this._hasValidCurrentOperands()) {
+      this.operation = operation
+      this._passCurrentOperandToPrevious()
+    }
+  }
+
+  _hasValidOperands() {
+    return this._hasValidCurrentOperands()
+      && _isNumberOrNumberString(this.previousOperand)
+  }
+
+  _hasValidCurrentOperands() {
+    return this.validOperand === true
+      && _isNumberOrNumberString(this.currentOperand)
+  }
+
+  _passCurrentOperandToPrevious() {
     this.previousOperand = this.currentOperand
     this.currentOperand = ''
   }
 
   compute() {
-    if (!this.validOperand) {
-      return
-    }
-
     const prev = parseFloat(this.previousOperand)
     const current = parseFloat(this.currentOperand)
-    if (isNaN(prev) || isNaN(current)) {
-      return
-    }
 
     let operation
     switch (this.operation) {
@@ -123,4 +128,20 @@ export class Calculator {
       this.previousOperandTextElement.innerText = ''
     }
   }
+}
+
+function _deleteLastChar(str) {
+  return str.slice(0, -1)
+}
+
+export function _isNumberOrNumberString(number) {
+  return typeof(number) === 'number' || _isNumberString(number)
+}
+
+function _isNumberString(numberStr) {
+  return /^-?\d+\.?\d*$/.test(numberStr)
+}
+
+function _hasDecimalPoint(numberStr) {
+  numberStr.includes('.')
 }
