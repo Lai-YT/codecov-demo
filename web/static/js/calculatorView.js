@@ -1,4 +1,4 @@
-import { Calculator } from './calculator.js';
+import { Calculator } from './calculator.js'
 
 const numberButtons = document.querySelectorAll('[data-number]')
 const operationButtons = document.querySelectorAll('[data-operation]')
@@ -33,25 +33,25 @@ allClearButton.addEventListener('click', button => {
 })
 
 document.addEventListener('keydown', function (event) {
-  let patternForNumbers = /^[0-9]$/g;  // limit length to 1, otherwise f1 ~ f12 passes
+  let patternForNumbers = /^[0-9]$/g  // limit length to 1, otherwise f1 ~ f12 passes
   let patternForOperators = /[+\-*\/]/g
   if (event.key.match(patternForNumbers)) {
-    event.preventDefault();
+    event.preventDefault()
     calculator.appendNumber(event.key)
     calculator.updateDisplay()
   }
   if (event.key === '.') {
-    event.preventDefault();
+    event.preventDefault()
     calculator.appendNumber(event.key)
     calculator.updateDisplay()
   }
   if (event.key.match(patternForOperators)) {
-    event.preventDefault();
+    event.preventDefault()
     calculator.chooseOperation(event.key)
     calculator.updateDisplay()
   }
   if (event.key === 'Enter' || event.key === '=') {
-    event.preventDefault();
+    event.preventDefault()
     calculator.compute()
   }
-});
+})
