@@ -14,8 +14,13 @@ describe('Number utility test suite', () => {
 })
 
 describe('Calculator test suite', () => {
+  let calculator
+
+  beforeEach(() => {
+    calculator = new calc.Calculator();
+  })
+
   test('calculator clears', () => {
-    const calculator = new calc.Calculator()
     calculator.clear()
 
     expect(calculator.currentOperand).toBe('')
@@ -25,7 +30,6 @@ describe('Calculator test suite', () => {
   })
 
   test('calculator can input numbers', () => {
-    const calculator = new calc.Calculator()
     calculator.appendNumber(1)
     expect(calculator.currentOperand).toBe('1')
 
@@ -34,33 +38,49 @@ describe('Calculator test suite', () => {
   })
 
   test('calculator can deletes', () => {
-    const calculator = new calc.Calculator()
-    calculator.appendNumber(1)
-    expect(calculator.currentOperand).toBe('1')
-
-    calculator.appendNumber(2)
+    calculator.appendNumber(12)
     expect(calculator.currentOperand).toBe('12')
 
     calculator.delete()
     expect(calculator.currentOperand).toBe('1')
+    calculator.delete()
+    expect(calculator.currentOperand).toBe('')
   })
-})
 
-test('test operation', () => {
-  const calculator = new calc.Calculator()
-  calculator.chooseOperation('+')
-  expect(calculator.operation).toBeUndefined()
+  test(`choose operator before giving operand,
+      shouldn't recode the operation`, () => {
+    calculator.chooseOperation('+')
+    expect(calculator.operation).toBeUndefined()
+  })
 
-  calculator.appendNumber(1)
-  calculator.appendNumber(2)
-  calculator.chooseOperation('+')
-  expect(calculator.currentOperand).toBe('')
-  expect(calculator.operation).toBe('+')
-  expect(calculator.previousOperand).toBe('12')
+  test('test operation transition between single operation', () => {
+    calculator.appendNumber(1)
+    calculator.appendNumber(2)
+    calculator.chooseOperation('+')
+    expect(calculator.currentOperand).toBe('')
+    expect(calculator.operation).toBe('+')
+    expect(calculator.previousOperand).toBe('12')
 
-  calculator.appendNumber(3)
-  calculator.appendNumber(4)
-  expect(calculator.currentOperand).toBe('34')
-  expect(calculator.operation).toBe('+')
-  expect(calculator.previousOperand).toBe('12')
+    calculator.appendNumber(3)
+    calculator.appendNumber(4)
+    expect(calculator.currentOperand).toBe('34')
+    expect(calculator.operation).toBe('+')
+    expect(calculator.previousOperand).toBe('12')
+  })
+
+  // TODO: mock api call
+  test.skip(`test operation transition cross operations,
+      the second operator should trigger computation`, () => {
+    calculator.appendNumber(1)
+    calculator.appendNumber(2)
+    calculator.chooseOperation('+')
+    calculator.appendNumber(3)
+    calculator.appendNumber(4)
+
+    calculator.chooseOperation('-')
+
+    expect(calculator.previousOperand).toBe('46')
+    expect(calculator.operation).toBe('-')
+    expect(calculator.previousOperand).toBe('')
+  })
 })
