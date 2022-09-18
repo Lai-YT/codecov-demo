@@ -66,7 +66,7 @@ export class Calculator {
     this.currentOperand = ''
   }
 
-  compute() {
+  async compute() {
     let operation
     switch (this.operation) {
       case '+':
@@ -84,8 +84,7 @@ export class Calculator {
       default:
         return
     }
-    this.currentOperand = this.callApi(operation)
-    this.operation = undefined
+    await this.callApi(operation)
     this.previousOperand = ''
     this.updateDisplay()
   }
