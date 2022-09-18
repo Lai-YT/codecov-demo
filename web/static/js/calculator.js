@@ -84,7 +84,7 @@ export class Calculator {
       default:
         return
     }
-    await this.callApi(operation)
+    this.currentOperand = await this.callApi(operation)
     this.previousOperand = ''
     this.updateDisplay()
   }
