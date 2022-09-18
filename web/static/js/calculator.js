@@ -43,11 +43,14 @@ export class Calculator {
    */
   chooseOperation(operation) {
     if (this._hasValidOperands()) {
-      this.compute()
-    }
-    if (this._hasValidCurrentOperands()) {
-      this.operation = operation
+      this.compute().then(() => {
+        this._passCurrentOperandToPrevious()
+        this.operation = operation
+        this.updateDisplay()
+      })
+    } else if (this._hasValidCurrentOperands()) {
       this._passCurrentOperandToPrevious()
+      this.operation = operation
     }
   }
 
@@ -66,6 +69,10 @@ export class Calculator {
     this.currentOperand = ''
   }
 
+  /**
+   *
+   * @returns the result of computation is assigned to the current operand, and the previous is cleared.
+   */
   async compute() {
     let operation
     switch (this.operation) {
@@ -86,13 +93,12 @@ export class Calculator {
     }
     this.currentOperand = await this.callApi(operation)
     this.previousOperand = ''
-    this.updateDisplay()
   }
 
   /**
    *
    * @param {string} operation
-   * @returns {string}
+   * @returns {Promise<string>}
    */
   async callApi(operation) {
     const response = await fetch('/api/' + operation, {
@@ -109,7 +115,7 @@ export class Calculator {
     if (!response.ok) {
       throw new Error('Error: ' + response.status)
     }
-    return await response.json()
+    return response.json()
   }
 
   getDisplayNumber(number) {
@@ -149,7 +155,7 @@ function _deleteLastChar(str) {
 }
 
 export function _isNumberOrNumberString(number) {
-  return typeof(number) === 'number' || _isNumberString(number)
+  return typeof (number) === 'number' || _isNumberString(number)
 }
 
 function _isNumberString(numberStr) {

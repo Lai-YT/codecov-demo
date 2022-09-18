@@ -71,7 +71,7 @@ describe('Calculator test suite', () => {
   test(`test operation transition cross operations,
       the second operator should trigger computation`, () => {
     jest.spyOn(calculator, 'callApi')
-      .mockImplementation(_ => '46')
+      .mockImplementation(_ => Promise.resolve('46'))
     jest.spyOn(calculator, 'updateDisplay')
       .mockImplementation(() => { })
 
