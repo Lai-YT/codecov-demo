@@ -5,7 +5,7 @@ const path = require('path')
 const app = express()
 
 const backendHost = 'http://localhost'
-const backendPort = '8080'
+const backendPort = '5000'
 
 app.use(express.json())
 app.use('/static', express.static(path.resolve(__dirname, 'static')))

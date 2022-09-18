@@ -68,9 +68,13 @@ describe('Calculator test suite', () => {
     expect(calculator.previousOperand).toBe('12')
   })
 
-  // TODO: mock api call
-  test.skip(`test operation transition cross operations,
+  test(`test operation transition cross operations,
       the second operator should trigger computation`, () => {
+    jest.spyOn(calculator, 'callApi')
+      .mockImplementation(_ => '46')
+    jest.spyOn(calculator, 'updateDisplay')
+      .mockImplementation(() => { })
+
     calculator.appendNumber(1)
     calculator.appendNumber(2)
     calculator.chooseOperation('+')
@@ -81,6 +85,6 @@ describe('Calculator test suite', () => {
 
     expect(calculator.previousOperand).toBe('46')
     expect(calculator.operation).toBe('-')
-    expect(calculator.previousOperand).toBe('')
+    expect(calculator.currentOperand).toBe('')
   })
 })

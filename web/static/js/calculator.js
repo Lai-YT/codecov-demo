@@ -1,6 +1,11 @@
 'use strict'
 
 export class Calculator {
+  /**
+   *
+   * @param {HTMLElement} previousOperandTextElement
+   * @param {HTMLElement} currentOperandTextElement
+   */
   constructor(previousOperandTextElement, currentOperandTextElement) {
     this.previousOperandTextElement = previousOperandTextElement
     this.currentOperandTextElement = currentOperandTextElement
@@ -18,6 +23,10 @@ export class Calculator {
     this.currentOperand = _deleteLastChar(this.currentOperand.toString())
   }
 
+  /**
+   *
+   * @param {number | string} number
+   */
   appendNumber(number) {
     if (!this.validOperand) {
       return
@@ -28,6 +37,10 @@ export class Calculator {
     this.currentOperand = this.currentOperand.toString() + number.toString()
   }
 
+  /**
+   *
+   * @param {string} operation
+   */
   chooseOperation(operation) {
     if (this._hasValidOperands()) {
       this.compute()
@@ -54,9 +67,6 @@ export class Calculator {
   }
 
   compute() {
-    const prev = parseFloat(this.previousOperand)
-    const current = parseFloat(this.currentOperand)
-
     let operation
     switch (this.operation) {
       case '+':
@@ -74,9 +84,17 @@ export class Calculator {
       default:
         return
     }
-    this.callApi(operation)
+    this.currentOperand = this.callApi(operation)
+    this.operation = undefined
+    this.previousOperand = ''
+    this.updateDisplay()
   }
 
+  /**
+   *
+   * @param {string} operation
+   * @returns {string}
+   */
   async callApi(operation) {
     const response = await fetch('/api/' + operation, {
       method: 'POST',
@@ -92,10 +110,7 @@ export class Calculator {
     if (!response.ok) {
       throw new Error('Error: ' + response.status)
     }
-    this.currentOperand = await response.json()
-    this.operation = undefined
-    this.previousOperand = ''
-    this.updateDisplay()
+    return await response.json()
   }
 
   getDisplayNumber(number) {
