@@ -36,7 +36,7 @@ flask run
 npm ci
 ```
 
-2. Start the server.
+2. Start the server. It will be runnning at port 3000 on the localhost.
 
 ```
 node server.js
